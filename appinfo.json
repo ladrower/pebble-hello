@@ -1,0 +1,19 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "ladrower@gmail.com",
+    "longName": "Hello World",
+    "projectType": "native",
+    "resources": {
+        "media": []
+    },
+    "sdkVersion": "3",
+    "shortName": "Hello World",
+    "uuid": "55cb7135-bab8-4ff5-8a4d-f7e1815961cf",
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": false
+    }
+}
