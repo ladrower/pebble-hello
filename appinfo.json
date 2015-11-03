@@ -4,13 +4,25 @@
         ""
     ],
     "companyName": "ladrower@gmail.com",
-    "longName": "Hello World",
+    "longName": "Hello Arithmetics",
     "projectType": "native",
     "resources": {
-        "media": []
+        "media": [
+            {
+                "file": "images/icon",
+                "menuIcon": true,
+                "name": "icon",
+                "type": "png"
+            }
+        ]
     },
     "sdkVersion": "3",
-    "shortName": "Hello World",
+    "shortName": "Arithmetics",
+    "targetPlatforms": [
+        "aplite",
+        "basalt",
+        "chalk"
+    ],
     "uuid": "55cb7135-bab8-4ff5-8a4d-f7e1815961cf",
     "versionLabel": "1.0",
     "watchapp": {
