@@ -17,9 +17,30 @@ static void update_problem() {
   
   uint8_t a = rand() % 100;
   uint8_t b = rand() % 100;
+  int16_t result;
+  char sign;
+  switch (rand() % 4) {
+    default:
+      sign = '+';
+      result = a + b;
+      break;
+    case 0:
+      sign = '-';
+      result = a - b;
+      break;
+    case 1:
+      if (a % 10) {
+        a %= 10; 
+      } else {
+        b %= 10; 
+      }
+      sign = 'x';
+      result = a * b;
+      break;
+  }
 
-  snprintf(problem, 6, "%d+%d", a, b);
-  snprintf(answer, 4, "%d", a + b);
+  snprintf(problem, 6, "%d%c%d", a, sign, b);
+  snprintf(answer, 4, "%d", result);
   text_layer_set_text(text_layer, problem);
 }
 
