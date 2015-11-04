@@ -3,11 +3,13 @@
 
 static Window *window;
 static TextLayer *text_layer;
+static AppTimer *app_timer;
 
-static bool idle = true;
 static bool answered = false;
 static char problem[6];
 static char answer[4];
+static const uint32_t PROBLEM_INTERVAL = 300000;
+static const uint32_t ANSWER_INTERVAL = 5000;
 
 static void update_problem() {
   time_t t;
@@ -21,14 +23,26 @@ static void update_problem() {
   text_layer_set_text(text_layer, problem);
 }
 
+static void set_problem(void *data) {
+  update_problem();
+  app_timer = app_timer_register(PROBLEM_INTERVAL, set_problem, data);
+  answered = false;
+}
+
 static void proceed () {
+  uint32_t interval;
   if (answered) {
+    interval = PROBLEM_INTERVAL;
     update_problem();
   } else {
+    interval = ANSWER_INTERVAL;
     text_layer_set_text(text_layer, answer);
   }
   answered = !answered;
-  idle = false;
+  
+  if (!app_timer_reschedule(app_timer, interval)) {
+    app_timer = app_timer_register(interval, set_problem, NULL);
+  }
 }
 
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
@@ -54,21 +68,16 @@ static void main_window_load(Window *window) {
   text_layer_set_text_alignment(text_layer, GTextAlignmentCenter);
 
   layer_add_child(window_layer, text_layer_get_layer(text_layer));
+  
+  set_problem(NULL);
 }
 
 static void main_window_unload(Window *window) {
+  app_timer_cancel(app_timer);
   text_layer_destroy(text_layer);
 }
 
-static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
-  if (idle) {
-    update_problem();
-  }
-  idle = true;
-}
-
 void init () {
-  
   window = window_create();
   
   window_set_click_config_provider(window, click_config_provider);
@@ -81,13 +90,10 @@ void init () {
   window_set_background_color(window, GColorBlack);
   
   window_stack_push(window, true);
-  tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
 }
 
 void deinit () {
   window_destroy(window);
-  problem[0] = '\0';
-  answer[0] = '\0';
 }
 
 int main () {
