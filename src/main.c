@@ -1,45 +1,64 @@
 #include <pebble.h>
 #include <stdlib.h>
+#include <time.h>
 
 static Window *window;
 static TextLayer *text_layer;
 static AppTimer *app_timer;
 
 static bool answered = false;
-static char problem[6];
+static char problem[7];
 static char answer[4];
 static const uint32_t PROBLEM_INTERVAL = 300000;
 static const uint32_t ANSWER_INTERVAL = 5000;
 
-static void update_problem() {
-  time_t t;
-  srand((unsigned) time(&t));
-  
-  uint8_t a = rand() % 100;
-  uint8_t b = rand() % 100;
+static void update_problem() {  
+  uint8_t a = rand() % 98 + 2;
+  uint8_t b = rand() % 98 + 2;
   int16_t result;
   char sign;
-  switch (rand() % 4) {
+  switch (rand() % 5) {
+//     default:
+//       sign = '+';
+//       result = a + b;
+//       break;
+//     case 0:
+//       sign = '-';
+//       result = a - b;
+//       break;
+//     case 1:
+//       if (a > 50) {
+//         a = a % 8 + 2; 
+//       } else {
+//         b = b % 8 + 2; 
+//       }
+//       sign = 'x';
+//       result = a * b;
+//       break;
+//     case 2:
     default:
-      sign = '+';
-      result = a + b;
-      break;
-    case 0:
-      sign = '-';
-      result = a - b;
-      break;
-    case 1:
-      if (a % 10) {
-        a %= 10; 
-      } else {
-        b %= 10; 
+      if (a > 50) {
+        result = a % 8 + 2;
+        b = b % 31 + 2; 
+        
+//         // Temp workaround to avoid long string eg 200/20
+//         if (result * b > 99 && b > 9) {
+//           result = a % 31 + 2;
+//           b = b % 8 + 2;
+//         }
+      } 
+      if (a <= 50 || (result * b > 99 && b > 9)) {
+        result = a % 31 + 2;
+        b = b % 8 + 2;
       }
-      sign = 'x';
-      result = a * b;
+      a = result * b; 
+    
+    
+      sign = '/';
       break;
   }
 
-  snprintf(problem, 6, "%d%c%d", a, sign, b);
+  snprintf(problem, 7, "%d%c%d", a, sign, b);
   snprintf(answer, 4, "%d", result);
   text_layer_set_text(text_layer, problem);
 }
@@ -90,6 +109,7 @@ static void main_window_load(Window *window) {
 
   layer_add_child(window_layer, text_layer_get_layer(text_layer));
   
+  srand((unsigned) time(NULL));
   set_problem(NULL);
 }
 
