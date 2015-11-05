@@ -18,34 +18,27 @@ static void update_problem() {
   int16_t result;
   char sign;
   switch (rand() % 5) {
-//     default:
-//       sign = '+';
-//       result = a + b;
-//       break;
-//     case 0:
-//       sign = '-';
-//       result = a - b;
-//       break;
-//     case 1:
-//       if (a > 50) {
-//         a = a % 8 + 2; 
-//       } else {
-//         b = b % 8 + 2; 
-//       }
-//       sign = 'x';
-//       result = a * b;
-//       break;
-//     case 2:
     default:
+      sign = '+';
+      result = a + b;
+      break;
+    case 0:
+      sign = '-';
+      result = a - b;
+      break;
+    case 1:
+      if (a > 50) {
+        a = a % 8 + 2; 
+      } else {
+        b = b % 8 + 2; 
+      }
+      sign = 'x';
+      result = a * b;
+      break;
+    case 2:
       if (a > 50) {
         result = a % 8 + 2;
         b = b % 31 + 2; 
-        
-//         // Temp workaround to avoid long string eg 200/20
-//         if (result * b > 99 && b > 9) {
-//           result = a % 31 + 2;
-//           b = b % 8 + 2;
-//         }
       } 
       if (a <= 50 || (result * b > 99 && b > 9)) {
         result = a % 31 + 2;
