@@ -38,13 +38,13 @@ static void update_problem() {
     case 2:
       if (a > 50) {
         result = a % 8 + 2;
-        b = b % 31 + 2; 
+        b = b % 27 + 2; 
       } 
       if (a <= 50 || (result * b > 99 && b > 9)) {
-        result = a % 31 + 2;
+        result = a % 27 + 2;
         b = b % 8 + 2;
       }
-      a = result * b; 
+      a = result * b;
     
     
       sign = '/';
@@ -83,9 +83,7 @@ static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
 }
 
 static void click_config_provider(void *context) {
-  //window_single_click_subscribe(BUTTON_ID_UP, up_click_handler);
   window_single_click_subscribe(BUTTON_ID_SELECT, select_click_handler);
-  //window_single_click_subscribe(BUTTON_ID_DOWN, down_click_handler);
 }
 
 static void main_window_load(Window *window) {
